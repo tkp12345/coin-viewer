@@ -11,7 +11,9 @@ interface TableRowProps {
   price_change_percentage_24h_in_currency: number
   price_change_percentage_7d_in_currency: number
   total_volume: number
+  market_cap_rank: number
   isBookmarked: boolean
+  refetch?: () => void
 }
 
 export const TableRow = ({ ...props }: TableRowProps) => {
@@ -20,6 +22,7 @@ export const TableRow = ({ ...props }: TableRowProps) => {
   const handleBookmarkToggle = debounce(() => {
     setBookmarked(!bookmarked)
     setBookmarkFromLocalStorage(props, bookmarked)
+    props.refetch && props.refetch()
   }, 300)
 
   useEffect(() => {

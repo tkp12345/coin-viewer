@@ -1,6 +1,11 @@
 import React from 'react'
 import { useCoinFilterContext } from '../../../context/coin-context-provider'
 
+const dataViewOptions = [
+  { value: 'all', label: '전체보기' },
+  { value: 'bookMark', label: '북마크보기' },
+]
+
 const currencyOptions = [
   { value: 'usd', label: 'USD 보기' },
   { value: 'krw', label: 'KRW 보기' },
@@ -12,8 +17,11 @@ const perPageOptions = [
   { value: 10, label: '50개 보기' },
 ]
 export const TableFilter = () => {
-  const { currency, perPage, setCurrency, setPerPage, setPage } = useCoinFilterContext()
+  const { viewOptions, currency, perPage, setViewOptions, setCurrency, setPerPage, setPage } = useCoinFilterContext()
 
+  const handleViewOptionsChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setViewOptions(event.target.value)
+  }
   const handleCurrencyChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrency(event.target.value)
     setPage(1) // Reset page when currency changes
@@ -27,6 +35,7 @@ export const TableFilter = () => {
   return (
     <div className="filter-container">
       <div>
+        <Select value={viewOptions} onChange={handleViewOptionsChange} options={dataViewOptions} />
         <Select value={currency} onChange={handleCurrencyChange} options={currencyOptions} />
         <Select value={perPage} onChange={handlePerPageChange} options={perPageOptions} />
       </div>

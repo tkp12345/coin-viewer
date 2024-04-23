@@ -7,4 +7,5 @@ export interface Coin {
   price_change_percentage_24h_in_currency: number
   price_change_percentage_7d_in_currency: number
   total_volume: number
+  market_cap_rank: number
 }
