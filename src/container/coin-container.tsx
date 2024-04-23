@@ -1,14 +1,14 @@
 import React from 'react'
-import { CoinList } from '../components/coin-list'
+import { CoinList } from '../components/coin/coin-list'
 import { AsyncBoundary } from '../../lib/utils/error/async-boundary'
+import { CoinFilterContextProvider } from '../context/coin-context-provider'
 
 export const CoinContainer = () => {
   return (
-    <div>
-      <h1>coin list</h1>
-      <AsyncBoundary>
+    <AsyncBoundary>
+      <CoinFilterContextProvider>
         <CoinList />
-      </AsyncBoundary>
-    </div>
+      </CoinFilterContextProvider>
+    </AsyncBoundary>
   )
 }
