@@ -1,8 +1,14 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { CoinDetailProvider } from '../context/coin-detail-context-provider'
+import { AsyncBoundary } from '../../lib/utils/error/async-boundary'
+import { CoinDetail } from '../components/coin/detail/coin-detail'
 
 export const CoinDetailContainer = () => {
-  const { id } = useParams()
-  console.log(id)
-  return <div></div>
+  return (
+    <AsyncBoundary>
+      <CoinDetailProvider>
+        <CoinDetail />
+      </CoinDetailProvider>
+    </AsyncBoundary>
+  )
 }
