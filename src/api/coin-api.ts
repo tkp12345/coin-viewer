@@ -11,8 +11,8 @@ export const fetchCoins = async (
   locale: string,
 ) => {
   const url = new URL(`${BASE_URL}/coins/markets`)
-  url.searchParams.append('vs_currency', currency)
   if (ids) url.searchParams.append('ids', ids)
+  url.searchParams.append('vs_currency', currency)
   url.searchParams.append('order', order)
   url.searchParams.append('per_page', perPage.toString())
   url.searchParams.append('page', page.toString())
@@ -22,7 +22,16 @@ export const fetchCoins = async (
 
   const response = await fetch(url.toString())
   if (!response.ok) {
-    throw new Error('Network response was not ok')
+    throw new Error('fetchCoins Network response was not ok')
+  }
+  return response.json()
+}
+
+export const fetchCoinsDetail = async (id: string) => {
+  const url = new URL(`${BASE_URL}/coins/${id}`)
+  const response = await fetch(url.toString())
+  if (!response.ok) {
+    throw new Error('fetchCoinsDetail Network response was not ok')
   }
   return response.json()
 }

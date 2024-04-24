@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { BookMarkContainer } from '../container/book-mark-container'
-import { CoinContainer } from '../container/coin-container'
+import { CoinContainer } from '../../container/coin-container'
+import { BookMarkContainer } from '../../container/book-mark-container'
 
 export const CoinGnb = () => {
   const [activeTab, setActiveTab] = useState('coinList')

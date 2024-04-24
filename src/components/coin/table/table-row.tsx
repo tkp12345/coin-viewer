@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { setBookmarkFromLocalStorage } from '../../../utils/local-storage-utils'
-import debounce from '../../../utils/debounce'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import { BookMarkToggle } from '../../ui/book-mark-toggle'
+import { useBookMarkState } from '../../../hooks/use-book-mark-state'
 
 interface TableRowProps {
   id: string
@@ -17,43 +18,27 @@ interface TableRowProps {
 }
 
 export const TableRow = ({ ...props }: TableRowProps) => {
-  const [bookmarked, setBookmarked] = useState<boolean>(props.isBookmarked)
+  const navigate = useNavigate()
 
-  const handleBookmarkToggle = debounce(() => {
-    setBookmarked(!bookmarked)
-    setBookmarkFromLocalStorage(props, bookmarked)
-    props.refetch && props.refetch()
-  }, 300)
-
-  useEffect(() => {
-    setBookmarked(props.isBookmarked)
-  }, [props.isBookmarked])
+  //북마크 핸들링 훅스
+  const { bookmarked, handleBookmarkToggle } = useBookMarkState({
+    data: props,
+    isBookmarked: props.isBookmarked,
+    refetch: props.refetch,
+  })
+  const navigateCoinDetail = () => {
+    navigate(`/coin/${props.id}`)
+  }
 
   return (
     <tr>
       <td style={textStyle}>
         <div style={flexContainerStyle}>
-          <div
-            style={{
-              flexShrink: 0,
-              height: '1.5rem',
-              width: '1.5rem',
-              cursor: 'pointer',
-            }}
-            onClick={() => handleBookmarkToggle()}
-          >
-            <span
-              style={{
-                ...starStyle,
-                color: bookmarked ? '#f59e0b' : '#D1D5DB',
-              }}
-            >
-              ★
-            </span>{' '}
-            {/* isBookmarked 상태에 따라 별의 색깔이 바뀜 */}
-          </div>
-          <div style={{ display: 'flex' }}>
-            <div style={{ ...textStyle, color: '#1f2937' }}>{props.name}</div>
+          <BookMarkToggle checked={bookmarked} onClick={handleBookmarkToggle} />
+          <div style={{ display: 'grid', gridTemplateColumns: '150px auto', gap: '10px' }}>
+            <div onClick={navigateCoinDetail} style={{ ...textStyle, color: '#1f2937', cursor: 'pointer' }}>
+              {props.name}
+            </div>
             <div style={{ ...textStyle, color: '#6b7280', fontSize: '0.875rem' }}>{props.symbol}</div>
           </div>
         </div>
@@ -98,11 +83,6 @@ const flexContainerStyle: React.CSSProperties = {
   alignItems: 'center',
 }
 
-const starStyle: React.CSSProperties = {
-  color: '#f59e0b',
-  marginRight: '1rem',
-}
-
 const changeStyle = (value: number) => ({
   padding: '0.5rem',
   display: 'inline-flex',
@@ -110,10 +90,6 @@ const changeStyle = (value: number) => ({
   lineHeight: '1.25rem',
   fontWeight: '600',
   borderRadius: '0.5rem',
-  backgroundColor: isPositive(value) ? '#ccffcc' : '#ffcccc',
-  color: isPositive(value) ? '#1f7a1f' : '#991b1b',
+  backgroundColor: value >= 0 ? '#ccffcc' : '#ffcccc',
+  color: value >= 0 ? '#1f7a1f' : '#991b1b',
 })
-
-function isPositive(value: number): boolean {
-  return value >= 0
-}

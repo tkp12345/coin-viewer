@@ -15,7 +15,14 @@ export const useCoinFetch = (
   locale: string = 'ko',
 ) => {
   const [data, setData] = useState<Coin[]>([])
-  const [error, setError] = useState<Error | null>(null)
+  const fetchData = async () => {
+    try {
+      const result = await fetchCoins(currency, ids, order, perPage, page, sparkline, priceChangePercentage, locale)
+      setData(result)
+    } catch (error) {
+      throw Error()
+    }
+  }
 
   useEffect(() => {
     if (viewOptions === 'bookMark') {
@@ -23,17 +30,8 @@ export const useCoinFetch = (
       if (bookmarkedCoinsData) return setData(bookmarkedCoinsData)
       setData([])
     }
-    const fetchData = async () => {
-      try {
-        const result = await fetchCoins(currency, ids, order, perPage, page, sparkline, priceChangePercentage, locale)
-        setData(result)
-      } catch (error) {
-        setError(error as Error)
-      }
-    }
-
     fetchData()
   }, [currency, perPage, page, viewOptions])
 
-  return { data, error }
+  return { data }
 }
