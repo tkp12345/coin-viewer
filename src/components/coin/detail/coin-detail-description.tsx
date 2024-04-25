@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import type { Coin } from '../../../types/coins'
+import type { CoinDetail } from '../../../types/coins'
 
-export const CoinDetailDescription = ({ coin }: { coin: Coin }) => {
+export const CoinDetailDescription = ({ coin }: { coin: CoinDetail }) => {
   const [showDescription, setShowDescription] = useState(false) // 설명 텍스트 표시 상태
 
   const getDescriptionText = () => {
@@ -11,6 +11,10 @@ export const CoinDetailDescription = ({ coin }: { coin: Coin }) => {
 
   const toggleDescription = () => {
     setShowDescription(!showDescription)
+  }
+
+  if (!getDescriptionText()) {
+    return null
   }
 
   return (

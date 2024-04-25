@@ -27,7 +27,6 @@ export const TableRow = ({ ...props }: TableRowProps) => {
     price_change_percentage_7d_in_currency,
     total_volume,
   } = props.coin
-
   //북마크 등록 핸들링 훅스
   const { bookmarked, handleBookmarkToggle } = useBookMarkState({
     data: props.coin,
@@ -49,24 +48,24 @@ export const TableRow = ({ ...props }: TableRowProps) => {
         </div>
       </td>
       <td style={textStyle}>
-        {`${_currencyFilter(props.currency)}${current_price.toLocaleString(undefined, {
+        {`${_currencyFilter(props.currency)}${current_price?.toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })}`}
       </td>
       <td style={textStyle}>
         <span style={changeStyle(price_change_percentage_1h_in_currency)}>
-          {price_change_percentage_1h_in_currency.toFixed(1)}%
+          {price_change_percentage_1h_in_currency?.toFixed(1)}%
         </span>
       </td>
       <td style={textStyle}>
         <span style={changeStyle(price_change_percentage_24h_in_currency)}>
-          {price_change_percentage_24h_in_currency.toFixed(1)}%
+          {price_change_percentage_24h_in_currency?.toFixed(1)}%
         </span>
       </td>
       <td style={textStyle}>
         <span style={changeStyle(price_change_percentage_7d_in_currency)}>
-          {price_change_percentage_7d_in_currency.toFixed(1)}%
+          {price_change_percentage_7d_in_currency?.toFixed(1)}%
         </span>
       </td>
 

@@ -21,12 +21,15 @@ export const BookMarkList = () => {
   useEffect(() => {
     fetchBookMark()
   }, [])
+
+  if (!bookmarkList.length) return <></>
+
   return (
     <div>
       <Table>
         <TableHeader headerOptions={['자산', 'Price', '1H', '24H', '7D', '24H Volume']} />
         <tbody style={{ backgroundColor: 'white', borderTop: '1px solid #e5e7eb', borderBottom: '1px solid #e5e7eb' }}>
-          {bookmarkList.map((coin) => (
+          {bookmarkList?.map((coin) => (
             <TableRow key={coin.id} coin={coin} isBookmarked={true} currency={'krw'} refetch={fetchBookMark} />
           ))}
         </tbody>

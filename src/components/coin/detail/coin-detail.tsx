@@ -1,19 +1,18 @@
 import { useParams } from 'react-router-dom'
-import { API_DETAIL_DATA } from '../../../mock/mock'
 import { CoinCurrenyChangeInput } from '../coin-curreny-input'
-import type { Coin } from '../../../types/coins'
 import React from 'react'
 import { CoinDetailHeader } from './coin-detail-header'
 import { CoinDetailSubSection } from './coin-detail-sub-section'
 import { NavigationBar } from '../../ui/navigation-bar'
 import { CoinDetailDescription } from './coin-detail-description'
+import { useCoinDetailFetch } from '../../../hooks/use-coin-detail-fetch'
 
 export const CoinDetail = () => {
   const { id } = useParams()
 
-  // const { data: coins } = useCoinDetailFetch(id)
-  const coin = API_DETAIL_DATA as Coin
+  const { data: coin } = useCoinDetailFetch(id)
 
+  if (!coin?.id) return <></>
   return (
     <>
       <NavigationBar id={id} />

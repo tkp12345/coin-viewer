@@ -2,27 +2,29 @@ import React, { useEffect, useState } from 'react'
 import { Table } from './table/table'
 import { TableHeader } from './table/table-header'
 import { TableRow } from './table/table-row'
-import { API_DATA } from '../../mock/mock'
 import { TableFilter } from './table/table-filter'
 import { useCoinFilterContext } from '../../context/coin-context-provider'
 import { getBookmarkFromLocalStorage } from '../../utils/local-storage-utils'
 import type { Coin } from '../../types/coins'
+import { useCoinFetch } from '../../hooks/use-coin-fetch'
 
 export const CoinList = () => {
-  const { viewOptions, currency, perPage, page, setCurrency, setPerPage, setPage } = useCoinFilterContext()
+  const { viewOptions, currency, perPage, page, setPage } = useCoinFilterContext()
   const [bookmarkedCoins, setBookmarkedCoins] = useState<Coin[]>([])
 
-  // const { data: coins, error } = useCoinFetch(
-  //   viewOptions,
-  //   currency,
-  //   '',
-  //   'market_cap_desc',
-  //   perPage,
-  //   page,
-  //   false,
-  //   '1h,24h,7d',
-  //   'kr',
-  // )
+  const { data: coins } = useCoinFetch({
+    params: {
+      currency: currency,
+      ids: '',
+      order: 'market_cap_desc',
+      perPage: perPage,
+      page: page,
+      sparkline: false,
+      priceChangePercentage: '1h,24h,7d',
+    },
+    viewOptions,
+  })
+
   const handleLoadMore = () => {
     setPage(page + 1)
   }
@@ -34,7 +36,8 @@ export const CoinList = () => {
     setBookmarkedCoins(bookmarkedCoinsData)
   }, [])
 
-  const coins = API_DATA as Coin[]
+  if (!coins?.length) return <></>
+
   return (
     <div>
       <TableFilter />

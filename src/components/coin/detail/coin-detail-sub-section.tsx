@@ -1,9 +1,9 @@
 import React from 'react'
 import { _currencyConvertor, _currencyFilter } from '../../../utils/currency-filter'
-import type { Coin } from '../../../types/coins'
+import type { CoinDetail } from '../../../types/coins'
 import { useCoinDetailContext } from '../../../context/coin-detail-context-provider'
 
-export const CoinDetailSubSection = ({ coin }: { coin: Coin }) => {
+export const CoinDetailSubSection = ({ coin }: { coin: CoinDetail }) => {
   const { market_data, symbol } = coin
   const { currency } = useCoinDetailContext()
 

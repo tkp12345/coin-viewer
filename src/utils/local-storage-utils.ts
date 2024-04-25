@@ -1,4 +1,4 @@
-import type { Coin } from '../types/coins'
+import type { Coin, CoinDetail } from '../types/coins'
 import { _toast } from './toastify-options'
 
 const COIN_LOCAL_STORAGE_SYMBOL = 'coinBookMark'

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import switchArrowIcon from '../../../icons/switchArrowIcon.png'
 import coinIcon from '../../../icons/coinIcon.png'
 import { useCoinDetailContext } from '../../context/coin-detail-context-provider'
-import type { Coin } from '../../types/coins'
+import type { CoinDetail } from '../../types/coins'
 import { _currencyConvertor } from '../../utils/currency-filter'
 import { useCurrencyChangeInput } from '../../hooks/use-currency-change-input'
 import { SwitchInputWrap } from '../ui/switchInputWrap'
 import { useUpdateEffect } from '../../hooks/use-update-effect'
 
-export const CoinCurrenyChangeInput = ({ coin }: { coin: Coin }) => {
+export const CoinCurrenyChangeInput = ({ coin }: { coin: CoinDetail }) => {
   const [focusedInput, setFocusedInput] = useState(false)
   //기준 input
   const [standardInput, setStandardInput] = useState<'' | 'currency' | 'crypto'>('')
