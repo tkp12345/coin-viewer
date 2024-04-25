@@ -1,33 +1,24 @@
 import type React from 'react'
-import type { Coin } from '../types/coins'
 import {
-  _currencyConvertor,
+  _formatDecimal,
   _formatNumberWithDots,
   _isValidCryptoRegex,
   _isValidCurrencyRegex,
 } from '../utils/currency-filter'
-import { formatStringToNumber } from '../utils/price-filter'
 import { useCoinDetailContext } from '../context/coin-detail-context-provider'
 
-export const useCurrencyChangeInput = ({ coin }: { coin: Coin }) => {
-  const { market_data } = coin
-  const { currency, setCurrencyAmount, setCryptoAmount } = useCoinDetailContext()
-
-  //현재 통화가 krw 인지
-  const isKrwBase = currency === 'krw'
-
-  //현재 기준 통화
-  const prevCurrency = _currencyConvertor({ currency, marketData: market_data })
+export const useCurrencyChangeInput = (prevCurrency: number) => {
+  const { setCurrencyAmount, setCryptoAmount } = useCoinDetailContext()
 
   //통화 변경
   const setCurrency = (currency: string) => {
-    const formatCurrency = _formatNumberWithDots(currency)
+    const formatCurrency = _formatNumberWithDots(_formatDecimal(currency))
     setCurrencyAmount(formatCurrency)
   }
 
   //암호화폐 변경
   const setCrypto = (crypto: string) => {
-    const formatCrypro = _formatNumberWithDots(crypto)
+    const formatCrypro = _formatNumberWithDots(_formatDecimal(crypto))
     setCryptoAmount(formatCrypro)
   }
 
@@ -48,11 +39,9 @@ export const useCurrencyChangeInput = ({ coin }: { coin: Coin }) => {
     if (value.startsWith('0') || isNaN(Number(value)) || !_isValidCurrencyRegex(value)) return
 
     setCurrency(value)
+    const newCryptoAmount = (parseFloat(value) * prevCurrency).toFixed(2)
 
-    const newCryptoAmount = isKrwBase
-      ? (parseFloat(value) * market_data.current_price.krw).toFixed(2)
-      : (parseFloat(value) * market_data.current_price.usd).toFixed(2)
-    setCrypto(formatStringToNumber(newCryptoAmount))
+    setCrypto(newCryptoAmount)
   }
 
   /*
@@ -66,9 +55,8 @@ export const useCurrencyChangeInput = ({ coin }: { coin: Coin }) => {
     if (isNaN(Number(value)) || !_isValidCryptoRegex(value)) return
 
     setCrypto(value)
-
     const newCurrencyAmount = (parseFloat(value) / prevCurrency).toFixed(0)
-    setCurrency(formatStringToNumber(newCurrencyAmount))
+    setCurrency(newCurrencyAmount)
   }
 
   return {
