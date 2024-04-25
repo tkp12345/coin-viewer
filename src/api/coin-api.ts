@@ -1,4 +1,5 @@
 import type { Coin, CoinDetail } from '../types/coins'
+import { _toast } from '../utils/toastify-options'
 
 const BASE_URL = 'https://api.coingecko.com/api/v3'
 export interface CoinsParams {
@@ -28,21 +29,31 @@ export const fetchCoins = async ({
   url.searchParams.append('sparkline', sparkline.toString())
   url.searchParams.append('price_change_percentage', priceChangePercentage)
   if (ids) url.searchParams.append('ids', ids)
-
   const response = await fetch(url.toString())
-  if (!response.ok) {
-    const errorDetails = await response.json()
-    throw new Error(errorDetails)
+  try {
+    if (!response.ok) {
+      const errorDetails = await response.json()
+      throw new Error(errorDetails)
+    }
+    return response.json()
+  } catch (error) {
+    _toast.error(_getResponseMessage(response.status))
+    throw error
   }
-  return response.json()
 }
 
 export const fetchCoinsDetail = async (id: string): Promise<CoinDetail> => {
   const url = new URL(`${BASE_URL}/coins/${id}`)
   const response = await fetch(url.toString())
-  if (!response.ok) {
-    const errorDetails = await response.json()
-    throw new Error(errorDetails)
+  try {
+    if (!response.ok) {
+      const errorDetails = await response.json()
+      _toast.error(_getResponseMessage(response.status))
+      throw new Error(errorDetails)
+    }
+    return response.json()
+  } catch (error) {
+    _toast.error(_getResponseMessage(response.status))
+    throw error
   }
-  return response.json()
 }

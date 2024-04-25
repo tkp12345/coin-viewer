@@ -18,8 +18,8 @@ export const useCurrencyChangeInput = (prevCurrency: number) => {
 
   //암호화폐 변경
   const setCrypto = (crypto: string) => {
-    const formatCrypro = _formatNumberWithDots(_formatDecimal(crypto))
-    setCryptoAmount(formatCrypro)
+    const formatCrypto = _formatNumberWithDots(_formatDecimal(crypto))
+    setCryptoAmount(formatCrypto)
   }
 
   //빈값 입력시 통화,암호화폐 초기화
