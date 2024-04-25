@@ -1,37 +1,24 @@
-import { useEffect, useState } from 'react'
+import type { CoinsParams } from '../api/coin-api'
 import { fetchCoins } from '../api/coin-api'
 import type { Coin } from '../types/coins'
+import { useQuery } from 'react-query'
+import { useEffect, useState } from 'react'
 import { getBookmarkFromLocalStorage } from '../utils/local-storage-utils'
 
-export const useCoinFetch = (
-  viewOptions: string,
-  currency: string,
-  ids: string,
-  order: string = 'market_cap_desc',
-  perPage: number = 10,
-  page: number = 1,
-  sparkline: boolean = false,
-  priceChangePercentage: string = '1h,24h,7d',
-  locale: string = 'ko',
-) => {
-  const [data, setData] = useState<Coin[]>([])
-  const fetchData = async () => {
-    try {
-      const result = await fetchCoins(currency, ids, order, perPage, page, sparkline, priceChangePercentage, locale)
-      setData(result)
-    } catch (error) {
-      throw Error()
-    }
-  }
+export const useCoinFetch = ({ params, viewOptions }: { params: CoinsParams; viewOptions: string }) => {
+  const [coinData, setCoinData] = useState<Coin[]>([])
+
+  const { data, error } = useQuery<Coin[], Error>(['coins', params], () => fetchCoins(params))
 
   useEffect(() => {
+    setCoinData(data ?? [])
+
     if (viewOptions === 'bookMark') {
       const bookmarkedCoinsData = getBookmarkFromLocalStorage()
-      if (bookmarkedCoinsData) return setData(bookmarkedCoinsData)
-      setData([])
+      if (bookmarkedCoinsData) return setCoinData(bookmarkedCoinsData)
+      setCoinData([])
     }
-    fetchData()
-  }, [currency, perPage, page, viewOptions])
+  }, [data, viewOptions])
 
-  return { data }
+  return { data: coinData, error }
 }

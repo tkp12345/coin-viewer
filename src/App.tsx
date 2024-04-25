@@ -7,18 +7,36 @@ import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
 import { toastDefaultOptions } from './utils/toastify-options'
 import { CoinGnb } from './components/coin/coin-gnb'
+import { QueryCache, QueryClient, QueryClientProvider } from 'react-query'
+import { DefaultQueryErrorHandler } from '../lib/utils/error/components/default-query-error-handler'
+
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (err) => console.error(`${err}`),
+  }),
+  defaultOptions: {
+    queries: {
+      onError: (error) => DefaultQueryErrorHandler(error),
+      suspense: true,
+      useErrorBoundary: true,
+      retry: 0,
+    },
+  },
+})
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <AsyncBoundary>
-        <Routes>
-          <Route path="/" Component={CoinGnb} />
-          <Route path="/coin/:id" Component={CoinDetailContainer} />
-        </Routes>
-        <ToastContainer {...toastDefaultOptions} />
-      </AsyncBoundary>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AsyncBoundary>
+          <Routes>
+            <Route path="/" Component={CoinGnb} />
+            <Route path="/coin/:id" Component={CoinDetailContainer} />
+          </Routes>
+          <ToastContainer {...toastDefaultOptions} />
+        </AsyncBoundary>
+      </BrowserRouter>
+    </QueryClientProvider>
   )
 }
 export default App

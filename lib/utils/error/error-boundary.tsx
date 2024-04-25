@@ -1,5 +1,5 @@
-import React, { ErrorInfo, ReactNode } from 'react'
-import { Component } from 'react'
+import type { ErrorInfo, ReactNode } from 'react'
+import React, { Component } from 'react'
 
 interface Props {
   children: ReactNode
@@ -14,24 +14,11 @@ interface State {
   errorCase?: string
 }
 
-type ErrorBoundaryState =
-  | {
-      hasError: boolean
-      error: null
-      errorCase: null
-    }
-  | {
-      hasError: boolean
-
-      error: Error
-      errorCase: null
-    }
-  | {
-      hasError: boolean
-
-      error: AxiosError<{ message: string }>
-      errorCase: 'unauthorized' | 'get'
-    }
+type ErrorBoundaryState = {
+  hasError: boolean
+  error: Error | null
+  errorCase: null
+}
 
 // const initialState: State = { hasError: false, error: null ,errorCase:''}
 const initialState: ErrorBoundaryState = { hasError: false, error: null, errorCase: null }
@@ -46,7 +33,6 @@ export class ErrorBoundary extends Component<Props, ErrorBoundaryState> {
 
   // error 발생시
   static getDerivedStateFromError(error: Error): State {
-
     return { hasError: true, error: error }
   }
 

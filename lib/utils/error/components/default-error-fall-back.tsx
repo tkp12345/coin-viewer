@@ -1,16 +1,11 @@
 import React from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 
 interface DefaultErrorFallBackProps {
   reset?: () => void
 }
 export const DefaultErrorFallBack = ({ reset }: DefaultErrorFallBackProps) => {
-  const navigate = useNavigate()
-  const location = useLocation()
-
   const refreshPage = () => {
-    // 현재 위치로 다시 이동
-    navigate(location.pathname, { replace: true })
+    window.location.reload()
   }
   return (
     <div style={styles.errorContainer}>
