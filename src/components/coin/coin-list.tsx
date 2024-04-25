@@ -7,7 +7,6 @@ import { TableFilter } from './table/table-filter'
 import { useCoinFilterContext } from '../../context/coin-context-provider'
 import { getBookmarkFromLocalStorage } from '../../utils/local-storage-utils'
 import type { Coin } from '../../types/coins'
-import { useCoinFetch } from '../../hooks/use-coin-fetch'
 
 export const CoinList = () => {
   const { viewOptions, currency, perPage, page, setCurrency, setPerPage, setPage } = useCoinFilterContext()
@@ -35,7 +34,7 @@ export const CoinList = () => {
     setBookmarkedCoins(bookmarkedCoinsData)
   }, [])
 
-  const coins = API_DATA
+  const coins = API_DATA as Coin[]
   return (
     <div>
       <TableFilter />
@@ -44,17 +43,10 @@ export const CoinList = () => {
         <tbody style={{ backgroundColor: 'white', borderTop: '1px solid #e5e7eb', borderBottom: '1px solid #e5e7eb' }}>
           {coins.map((coin) => (
             <TableRow
-              id={coin.id}
               key={coin.id}
-              name={coin.name}
-              symbol={coin.symbol}
-              current_price={coin.current_price}
-              price_change_percentage_1h_in_currency={coin.price_change_percentage_1h_in_currency}
-              price_change_percentage_24h_in_currency={coin.price_change_percentage_24h_in_currency}
-              price_change_percentage_7d_in_currency={coin.price_change_percentage_7d_in_currency}
-              market_cap_rank={coin.market_cap_rank}
-              total_volume={coin.total_volume}
+              coin={coin}
               isBookmarked={bookmarkedCoins?.some((bookmarkedCoin) => bookmarkedCoin.id === coin.id)}
+              currency={currency}
             />
           ))}
         </tbody>

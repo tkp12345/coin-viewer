@@ -5,26 +5,27 @@ import type { Coin } from '../../../types/coins'
 import React from 'react'
 import { CoinDetailHeader } from './coin-detail-header'
 import { CoinDetailSubSection } from './coin-detail-sub-section'
+import { NavigationBar } from '../../ui/navigation-bar'
+import { CoinDetailDescription } from './coin-detail-description'
 
 export const CoinDetail = () => {
   const { id } = useParams()
 
   // const { data: coins } = useCoinDetailFetch(id)
-  const coins = API_DETAIL_DATA as Coin
-  const getDescriptionText = () => {
-    const { ko, en } = coins.description
-    return ko || en || ''
-  }
+  const coin = API_DETAIL_DATA as Coin
 
   return (
-    <div style={styles.container}>
-      <div style={{ width: '100%' }}>
-        <CoinDetailHeader coins={coins} id={id} />
-        <CoinDetailSubSection coins={coins} />
-        <CoinCurrenyInput coins={coins} />
+    <>
+      <NavigationBar id={id} />
+      <div style={styles.container}>
+        <div style={{ width: '100%' }}>
+          <CoinDetailHeader coin={coin} id={id} />
+          <CoinDetailSubSection coin={coin} />
+          <CoinCurrenyInput coin={coin} />
+        </div>
+        <CoinDetailDescription coin={coin} />
       </div>
-      {getDescriptionText() && <p style={styles.description}>{getDescriptionText()}</p>}
-    </div>
+    </>
   )
 }
 

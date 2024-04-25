@@ -25,20 +25,7 @@ export const BookMarkList = () => {
         <TableHeader headerOptions={['자산', 'Price', '1H', '24H', '7D', '24H Volume']} />
         <tbody style={{ backgroundColor: 'white', borderTop: '1px solid #e5e7eb', borderBottom: '1px solid #e5e7eb' }}>
           {bookmarkList.map((coin) => (
-            <TableRow
-              id={coin.id}
-              key={coin.id}
-              name={coin.name}
-              symbol={coin.symbol}
-              current_price={coin.current_price}
-              price_change_percentage_1h_in_currency={coin.price_change_percentage_1h_in_currency}
-              price_change_percentage_24h_in_currency={coin.price_change_percentage_24h_in_currency}
-              price_change_percentage_7d_in_currency={coin.price_change_percentage_7d_in_currency}
-              total_volume={coin.total_volume}
-              market_cap_rank={coin.market_cap_rank}
-              isBookmarked={true}
-              refetch={fetchBookMark}
-            />
+            <TableRow key={coin.id} coin={coin} isBookmarked={true} currency={'krw'} refetch={fetchBookMark} />
           ))}
         </tbody>
       </Table>

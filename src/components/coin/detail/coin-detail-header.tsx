@@ -6,12 +6,14 @@ import { BookMarkToggle } from '../../ui/book-mark-toggle'
 import { CoinSelectWrap } from '../../ui/coin-select-button'
 import { useCoinDetailContext } from '../../../context/coin-detail-context-provider'
 
-export const CoinDetailHeader = ({ coins, id }: { coins: Coin; id: string | undefined }) => {
-  const [initBookMarked, setInitBookMarked] = useState(false)
+export const CoinDetailHeader = ({ coin, id }: { coin: Coin; id: string | undefined }) => {
+  const { image, name, symbol, price_change_percentage_1h_in_currency } = coin
   const { currency, setCurrency } = useCoinDetailContext()
+  const [initBookMarked, setInitBookMarked] = useState(false)
+
   //북마크 핸들링 훅스
   const { bookmarked, handleBookmarkToggle } = useBookMarkState({
-    data: coins,
+    data: coin,
     isBookmarked: initBookMarked,
   })
 
@@ -21,16 +23,17 @@ export const CoinDetailHeader = ({ coins, id }: { coins: Coin; id: string | unde
 
     setInitBookMarked(bookmarkedCoinsData.some((local) => local.id === id))
   }, [])
+
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <BookMarkToggle size={'xx-large'} checked={bookmarked} onClick={handleBookmarkToggle} />
-        <img style={styles.image} src={coins.image.large} alt={coins.name} />
+        <img style={styles.image} src={image.large} alt={name} />
         <h1 style={styles.title}>
-          {coins.name} ({coins.symbol.toUpperCase()})
+          {name} ({symbol.toUpperCase()})
         </h1>
-        <span style={changeStyle(coins.price_change_percentage_1h_in_currency)}>
-          {`${coins.price_change_percentage_1h_in_currency}%`}
+        <span style={changeStyle(price_change_percentage_1h_in_currency)}>
+          {`${price_change_percentage_1h_in_currency.toFixed(1)}%`}
         </span>
       </div>
       <CoinSelectWrap.Currency currency={currency} setCurrency={setCurrency}></CoinSelectWrap.Currency>

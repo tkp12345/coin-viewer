@@ -3,16 +3,26 @@ import { currencyFilter } from '../../../utils/currency-filter'
 import type { Coin } from '../../../types/coins'
 import { useCoinDetailContext } from '../../../context/coin-detail-context-provider'
 
-export const CoinDetailSubSection = ({ coins }: { coins: Coin }) => {
+export const CoinDetailSubSection = ({ coin }: { coin: Coin }) => {
+  const { market_data, symbol } = coin
   const { currency, setCurrency } = useCoinDetailContext()
+
   const currentPrice =
-    currency === 'krw' ? coins.market_data.current_price.krw.toFixed(2) : coins.market_data.current_price.usd.toFixed(2)
+    currency === 'krw'
+      ? market_data.current_price.krw.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
+      : market_data.current_price.usd.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })
   const getCoinPriceTitle = () => {
-    return `1 ${coins.symbol.toUpperCase()} = ${currencyFilter(currency)} ${currentPrice}  ${currency.toUpperCase()}`
+    return `1 ${symbol.toUpperCase()} = ${currencyFilter(currency)} ${currentPrice}  ${currency.toUpperCase()}`
   }
 
   const getCoinPriceDescription = () => {
-    return `${coins.symbol.toUpperCase()} 실시간 가격은 ${currentPrice}입니다. 즉, 1 ${currency.toUpperCase()}로 ${currentPrice} ${coins.symbol.toUpperCase()}을(를) 구매할 수 있습니다`
+    return `${symbol.toUpperCase()} 실시간 가격은 ${currencyFilter(currency)} ${currentPrice}입니다. 즉, 1 ${currency.toUpperCase()}로 ${currentPrice} ${symbol.toUpperCase()}을(를) 구매할 수 있습니다`
   }
 
   return (

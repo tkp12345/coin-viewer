@@ -2,32 +2,37 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BookMarkToggle } from '../../ui/book-mark-toggle'
 import { useBookMarkState } from '../../../hooks/use-book-mark-state'
+import { currencyFilter } from '../../../utils/currency-filter'
+import type { Coin } from '../../../types/coins'
 
 interface TableRowProps {
-  id: string
-  name: string
-  symbol: string
-  current_price: number
-  price_change_percentage_1h_in_currency: number
-  price_change_percentage_24h_in_currency: number
-  price_change_percentage_7d_in_currency: number
-  total_volume: number
-  market_cap_rank: number
+  coin: Coin
   isBookmarked: boolean
+  currency: string
   refetch?: () => void
 }
 
 export const TableRow = ({ ...props }: TableRowProps) => {
   const navigate = useNavigate()
+  const {
+    id,
+    name,
+    symbol,
+    current_price,
+    price_change_percentage_1h_in_currency,
+    price_change_percentage_24h_in_currency,
+    price_change_percentage_7d_in_currency,
+    total_volume,
+  } = props.coin
 
   //북마크 핸들링 훅스
   const { bookmarked, handleBookmarkToggle } = useBookMarkState({
-    data: props,
+    data: props.coin,
     isBookmarked: props.isBookmarked,
     refetch: props.refetch,
   })
   const navigateCoinDetail = () => {
-    navigate(`/coin/${props.id}`)
+    navigate(`/coin/${id}`)
   }
 
   return (
@@ -37,30 +42,40 @@ export const TableRow = ({ ...props }: TableRowProps) => {
           <BookMarkToggle checked={bookmarked} onClick={handleBookmarkToggle} />
           <div style={{ display: 'grid', gridTemplateColumns: '150px auto', gap: '10px' }}>
             <div onClick={navigateCoinDetail} style={{ ...textStyle, color: '#1f2937', cursor: 'pointer' }}>
-              {props.name}
+              {name}
             </div>
-            <div style={{ ...textStyle, color: '#6b7280', fontSize: '0.875rem' }}>{props.symbol}</div>
+            <div style={{ ...textStyle, color: '#6b7280', fontSize: '0.875rem' }}>{symbol}</div>
           </div>
         </div>
       </td>
-      <td style={textStyle}>{props.current_price}</td>
       <td style={textStyle}>
-        <span style={changeStyle(props.price_change_percentage_1h_in_currency)}>
-          {props.price_change_percentage_1h_in_currency}%
+        {`${currencyFilter(props.currency)}${current_price.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`}
+      </td>
+      <td style={textStyle}>
+        <span style={changeStyle(price_change_percentage_1h_in_currency)}>
+          {price_change_percentage_1h_in_currency.toFixed(1)}%
         </span>
       </td>
       <td style={textStyle}>
-        <span style={changeStyle(props.price_change_percentage_24h_in_currency)}>
-          {props.price_change_percentage_24h_in_currency}%
+        <span style={changeStyle(price_change_percentage_24h_in_currency)}>
+          {price_change_percentage_24h_in_currency.toFixed(1)}%
         </span>
       </td>
       <td style={textStyle}>
-        <span style={changeStyle(props.price_change_percentage_7d_in_currency)}>
-          {props.price_change_percentage_7d_in_currency}%
+        <span style={changeStyle(price_change_percentage_7d_in_currency)}>
+          {price_change_percentage_7d_in_currency.toFixed(1)}%
         </span>
       </td>
 
-      <td style={textStyle}>{props.total_volume}</td>
+      <td style={textStyle}>
+        {`${currencyFilter(props.currency)}${total_volume.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`}
+      </td>
     </tr>
   )
 }
