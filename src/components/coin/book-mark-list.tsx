@@ -12,6 +12,8 @@ export const BookMarkList = () => {
   const fetchBookMark = () => {
     const bookmarkedCoins = getBookmarkFromLocalStorage()
     if (!bookmarkedCoins) return
+
+    //마켓 목록 순서 조정 (market cap 순위)
     const rangedBookmarkedCoins = bookmarkedCoins.sort((a, b) => a.market_cap_rank - b.market_cap_rank)
     setBookmarkList(rangedBookmarkedCoins)
   }

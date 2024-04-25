@@ -1,6 +1,9 @@
 import type { ToastContainerProps, ToastPosition } from 'react-toastify'
 import { toast } from 'react-toastify'
 
+/*
+ react-toastify 설정
+ */
 export const toastDefaultOptions: ToastContainerProps = {
   position: 'bottom-center' as ToastPosition,
   autoClose: 1200,

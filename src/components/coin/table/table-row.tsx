@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { BookMarkToggle } from '../../ui/book-mark-toggle'
 import { useBookMarkState } from '../../../hooks/use-book-mark-state'
-import { currencyFilter } from '../../../utils/currency-filter'
+import { _currencyFilter } from '../../../utils/currency-filter'
 import type { Coin } from '../../../types/coins'
 
 interface TableRowProps {
@@ -14,6 +14,9 @@ interface TableRowProps {
 
 export const TableRow = ({ ...props }: TableRowProps) => {
   const navigate = useNavigate()
+  const navigateCoinDetail = () => {
+    navigate(`/coin/${id}`)
+  }
   const {
     id,
     name,
@@ -25,15 +28,12 @@ export const TableRow = ({ ...props }: TableRowProps) => {
     total_volume,
   } = props.coin
 
-  //북마크 핸들링 훅스
+  //북마크 등록 핸들링 훅스
   const { bookmarked, handleBookmarkToggle } = useBookMarkState({
     data: props.coin,
     isBookmarked: props.isBookmarked,
     refetch: props.refetch,
   })
-  const navigateCoinDetail = () => {
-    navigate(`/coin/${id}`)
-  }
 
   return (
     <tr>
@@ -49,7 +49,7 @@ export const TableRow = ({ ...props }: TableRowProps) => {
         </div>
       </td>
       <td style={textStyle}>
-        {`${currencyFilter(props.currency)}${current_price.toLocaleString(undefined, {
+        {`${_currencyFilter(props.currency)}${current_price.toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })}`}
@@ -71,7 +71,7 @@ export const TableRow = ({ ...props }: TableRowProps) => {
       </td>
 
       <td style={textStyle}>
-        {`${currencyFilter(props.currency)}${total_volume.toLocaleString(undefined, {
+        {`${_currencyFilter(props.currency)}${total_volume.toLocaleString(undefined, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
         })}`}

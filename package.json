@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "parcel -p 1215 ./src/index.html",
+    "start": "parcel -p 1216 ./src/index.html",
     "build": "parcel build ./src/index.html --public-url ./ --out-dir build/output --no-source-maps"
   },
   "keywords": [],

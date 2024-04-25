@@ -1,3 +1,6 @@
+/*
+ 000 단위 소숫점 제거
+ */
 export const formatStringToNumber = (str: string) => {
   const num = parseFloat(str)
   // isNaN 체크는 숫자가 아닌 문자열이 들어왔을 경우를 대비한 것입니다.

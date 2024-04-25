@@ -8,6 +8,10 @@ interface useBookMarkStateProps {
   isBookmarked: boolean
   refetch?: (() => void) | undefined
 }
+
+/*
+  북막크 등록 핸들링 훅스
+ */
 export const useBookMarkState = ({ data, isBookmarked, refetch }: useBookMarkStateProps) => {
   const [bookmarked, setBookmarked] = useState<boolean>(isBookmarked)
 
