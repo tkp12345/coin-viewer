@@ -1,10 +1,11 @@
-import type { ErrorInfo, ReactNode } from 'react'
+import type { ErrorInfo, ReactElement, ReactNode } from 'react'
+import { cloneElement } from 'react'
 import React, { Component } from 'react'
 
 interface Props {
   children: ReactNode
   message?: string
-  fallback?: ReactNode
+  fallback?: ReactElement
   resetQuery?: () => void
 }
 
@@ -50,14 +51,17 @@ export class ErrorBoundary extends Component<Props, ErrorBoundaryState> {
   }
 
   render() {
-    const { hasError } = this.state
+    const { hasError, error } = this.state
     const { fallback, message } = this.props
 
     if (hasError) {
       if (fallback) {
-        return fallback
+        // return fallback
+        return cloneElement(fallback, {
+          resetBoundary: this.resetBoundary,
+          error,
+        })
       }
-
       return <span>{message ?? 'Load Failed'}</span>
     }
 

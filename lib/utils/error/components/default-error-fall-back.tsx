@@ -1,16 +1,13 @@
 import React from 'react'
 
-interface DefaultErrorFallBackProps {
-  reset?: () => void
+interface Props {
+  resetBoundary?: () => void
 }
-export const DefaultErrorFallBack = ({ reset }: DefaultErrorFallBackProps) => {
-  const refreshPage = () => {
-    window.location.reload()
-  }
+export const DefaultErrorFallBack = ({ resetBoundary }: Props) => {
   return (
     <div style={styles.errorContainer}>
       <div style={styles.errorMessage}>오류가 발생했습니다.</div>
-      <button onClick={reset ? reset : refreshPage} style={styles.retryButton}>
+      <button onClick={resetBoundary} style={styles.retryButton}>
         다시 시도
       </button>
     </div>

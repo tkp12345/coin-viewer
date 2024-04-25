@@ -9,6 +9,7 @@ import { toastDefaultOptions } from './utils/toastify-options'
 import { CoinGnb } from './components/coin/coin-gnb'
 import { QueryCache, QueryClient, QueryClientProvider } from 'react-query'
 import { DefaultQueryErrorHandler } from '../lib/utils/error/components/default-query-error-handler'
+import { DefaultNotFound } from '../lib/utils/error/components/default-not-found'
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -18,6 +19,7 @@ const queryClient = new QueryClient({
     queries: {
       onError: (error) => DefaultQueryErrorHandler(error),
       suspense: true,
+      refetchOnWindowFocus: false,
       useErrorBoundary: true,
       retry: 0,
     },
@@ -32,6 +34,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" Component={CoinGnb} />
             <Route path="/coin/:id" Component={CoinDetailContainer} />
+            <Route path="*" Component={DefaultNotFound} />
           </Routes>
           <ToastContainer {...toastDefaultOptions} />
         </AsyncBoundary>
