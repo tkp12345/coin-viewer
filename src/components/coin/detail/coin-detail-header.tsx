@@ -7,7 +7,7 @@ import { CoinSelectWrap } from '../../ui/coin-select-button'
 import { useCoinDetailContext } from '../../../context/coin-detail-context-provider'
 
 export const CoinDetailHeader = ({ coin, id }: { coin: Coin; id: string | undefined }) => {
-  const { image, name, symbol, price_change_percentage_1h_in_currency } = coin
+  const { links, image, name, symbol, price_change_percentage_1h_in_currency } = coin
   const { currency, setCurrency } = useCoinDetailContext()
   const [initBookMarked, setInitBookMarked] = useState(false)
 
@@ -16,6 +16,17 @@ export const CoinDetailHeader = ({ coin, id }: { coin: Coin; id: string | undefi
     data: coin,
     isBookmarked: initBookMarked,
   })
+
+  //암호화폐 링크
+  const cryptoLink = links?.homepage.length > 0 ? links.homepage[0] : undefined
+
+  const TitleContent = cryptoLink ? (
+    <a href={cryptoLink}>
+      {name} ({symbol.toUpperCase()})
+    </a>
+  ) : (
+    `${name} (${symbol.toUpperCase()})`
+  )
 
   useEffect(() => {
     const bookmarkedCoinsData = getBookmarkFromLocalStorage()
@@ -29,9 +40,7 @@ export const CoinDetailHeader = ({ coin, id }: { coin: Coin; id: string | undefi
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <BookMarkToggle size={'xx-large'} checked={bookmarked} onClick={handleBookmarkToggle} />
         <img style={styles.image} src={image.large} alt={name} />
-        <h1 style={styles.title}>
-          {name} ({symbol.toUpperCase()})
-        </h1>
+        <h1 style={styles.title}>{TitleContent}</h1>
         <span style={changeStyle(price_change_percentage_1h_in_currency)}>
           {`${price_change_percentage_1h_in_currency.toFixed(1)}%`}
         </span>

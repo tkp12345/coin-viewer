@@ -15,6 +15,9 @@ export interface Coin {
     small: string
     thumb: string
   }
+  links: {
+    homepage: string[]
+  }
   total_volume: number
   market_cap_rank: number
   market_data: {

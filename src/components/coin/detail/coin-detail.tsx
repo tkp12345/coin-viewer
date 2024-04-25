@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { API_DETAIL_DATA } from '../../../mock/mock'
-import { CoinCurrenyInput } from '../coin-curreny-input'
+import { CoinCurrenyChangeInput } from '../coin-curreny-input'
 import type { Coin } from '../../../types/coins'
 import React from 'react'
 import { CoinDetailHeader } from './coin-detail-header'
@@ -21,7 +21,7 @@ export const CoinDetail = () => {
         <div style={{ width: '100%' }}>
           <CoinDetailHeader coin={coin} id={id} />
           <CoinDetailSubSection coin={coin} />
-          <CoinCurrenyInput coin={coin} />
+          <CoinCurrenyChangeInput coin={coin} />
         </div>
         <CoinDetailDescription coin={coin} />
       </div>
